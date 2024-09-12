@@ -121,11 +121,17 @@ export const DELETE = async (request: NextRequest) => {
   const foundIndex = DB.students.findIndex(
     (std) => std.studentId === body.studentId
   );
-  if (foundIndex === -1) {
+  if (body.studentId.length !== 9) {
     return NextResponse.json(
-      { ok: false, message: "Student Id does not exist" },
+      { ok: false, message: "Student Id must contain 9 characters" },
       { status: 404 }
     );
+  }
+    else if (foundIndex === -1) {
+      return NextResponse.json(
+        { ok: false, message: "Student Id does not exist" },
+        { status: 404 }
+      );
   }
 
   //perform removing student from DB. You can choose from 2 choices
@@ -138,6 +144,6 @@ export const DELETE = async (request: NextRequest) => {
 
   return NextResponse.json({
     ok: true,
-    message: `Student Id xxx has been deleted`,
+    message: `Student Id ${body.studentId} has been deleted`,
   });
 };
